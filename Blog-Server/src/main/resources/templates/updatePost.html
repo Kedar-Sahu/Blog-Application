@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+th:replace="~{base :: layout(~{::title},~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>update page</title>
+</head>
+<body>
+     <section>
+       <div class="container-fluid ">
+         <div class="row mt-4 rounded">
+           <div class="col-3"></div>
+           <div class="col-6">
+             <div class="card">
+               <div class="card-header bg-warning  text-center">
+                    <h3>Update Post</h3>
+                    
+                    <th:block th:if="${session.succMsg}">
+                       <p class="text-success text-center fw-bold">[[${session.succMsg}]]</p>
+                       <th:block th:text="${@postServiceImpl.removeSessionMessage()}"></th:block>
+                   </th:block>
+                   
+                   <th:block th:if="${session.errorMsg}">
+                       <p class="text-danger text-center fw-bold">[[${session.errorMsg}]]</p>
+                       <th:block th:text="${@postServiceImpl.removeSessionMessage()}"></th:block>
+                   </th:block>
+                    
+               </div>
+               <div class="card-body">
+                 <form action="/update" method="post" enctype="multipart/form-data">
+                 <input type="hidden" name="id" th:value="${post.id}">
+                    <div class="row">
+                      <div class="col-12 mt-3">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="name" th:value="${post.name}"  placeholder="name">
+                      </div>
+                      <div class="col-12 mt-3">
+                        <label >Content</label>
+                        <textarea  class="form-control" name="content" th:value="${post.content}" ></textarea>
+                      </div>
+                      <div class="col-12 mt-3">
+                         <label >PostedBy</label>
+                         <input type="text" class="form-control" name="postedBy" th:value="${post.postedBy}" placeholder="postedBy">
+                      </div>
+                      <div class="col-12 mt-3">
+                        <label >Image</label>
+                        <input type="file" class="form-control" name="file">
+                      </div>
+                      <div class="col-4 mt-4">
+                            <img th:src="@{'/images/img/'+${post.img}}" width="100px" height="100px">
+                      </div>
+                      <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary mx-3" >Update</button>
+                      </div>
+                    </div>
+                 </form>
+                </div>
+              </div>
+           </div>
+         </div>
+      </div>
+   </section>
+       
+</body>
+</html>

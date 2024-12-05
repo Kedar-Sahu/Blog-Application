@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+th:replace="~{base :: layout(~{::title},~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>show post</title>
+</head>
+<body>
+      <section>
+          <div class="container-fluid">
+             <div class="row m-4" >
+             
+                <div class="col-12">
+                   <div class="card">
+                   <th:block th:if="${session.errorMsg}">
+                       <p class="text-danger text-center fw-bold">[[${session.errorMsg}]]</p>
+                       <th:block th:text="${@postServiceImpl.removeSessionMessage()}"></th:block>
+                   </th:block>
+                      <div class="card-header">
+                            
+                           <h4>[[${post.name}]]</h4>
+                           <p>Posted By: <span th:text="${post.postedBy}"></span> | Posted On: <span th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></span></p>    
+                       </div>
+                       <div class="card-body">
+                          <div class="row">
+                            <div class="col-12">
+                                <img th:src="@{'/images/'+${post.img}}" width="100%" height="350px" alt="card image">
+                            </div>
+                            <div class="col-12 fs-5">
+                              <p>[[${post.content}]]</p>
+                            </div>
+                            <div class="col-10">
+                             <a class="btn btn-primary mx-2" th:href="@{'/updateLike2/'+${post.id}}"><i class="bi bi-heart-fill"></i>  [[${post.likeCount}]]</a>
+                             <a class="btn btn-primary mx-2" ><i class="bi bi-eye-fill"></i>  [[${post.viewCount}]]</a>
+                             
+                            </div>
+                            <div class="col-2">
+                                <a class="btn btn-danger  text-light" th:href="@{'/deletePost/'+${post.id}}">Delete</a>
+                                <a class="btn btn-success mx-2 text-light" th:href="@{'/loadUpdatePost/'+${post.id}}">Update</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+                <div class="col-12 mt-3">
+                   <div class="card">
+                    <th:block th:if="${session.errorMsg}">
+                       <p class="text-danger text-center fw-bold">[[${session.errorMsg}]]</p>
+                       <th:block th:text="${@postServiceImpl.removeSessionMessage()}"></th:block>
+                    </th:block>
+                     <div class="card-header">
+                         <h4>Publish Your Comment</h4>
+                     </div>
+                     <div class="card-body">
+                        <form action="/comment/saveComment" method="post">
+                        <input type="hidden" name="id" th:value="${post.id}">
+                           <div class="row">
+                              <div class="col-12 ">
+                                 <label></label>
+                                 <textarea  class="form-control" name="content" placeholder="Comment here"></textarea>
+                              </div>
+                              <div class="col-12 ">
+                                 <label></label>
+                                 <input type="text" class="form-control" name="postedBy"  placeholder="Posted By">
+                              </div>
+                               <div class="col-12 mt-1">
+                                <button class="btn btn-secondary" >Comment</button>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                   </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card" >
+                     <div class="card-header"> 
+                          <a class="btn btn-secondary text-light" th:href="@{'/comment/getAllComment/'+${post.id}}">See Comments</a>
+                     </div>
+                     <div class="card-body">
+                        <div class="row" th:each="c:${listComment}">
+                           <div class="col-12" >
+                             <p>Posted By: <span th:text="${post.postedBy}"></span>  |  Posted On:  <span th:text="${#dates.format(post.date, 'dd/MM/yyyy HH:mm')}"></span></p>    
+                             <p><span th:text="${c.content}"></span></p> 
+                             
+                             <hr>
+                           </div>
+                        </div>
+                      </div>
+                    </div>
+                 </div>
+             </div>
+         </div>
+         
+         
+    </section>
+      
+</body>
+</html>
